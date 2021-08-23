@@ -1,6 +1,8 @@
 from django.db import models
 from datetime import date
 
+from django.urls import reverse
+
 
 class Category(models.Model):
     """Categories"""
@@ -67,6 +69,9 @@ class Movie(models.Model):
     category = models.ForeignKey(Category, verbose_name="Category", on_delete=models.SET_NULL, null=True)
     url = models.SlugField(max_length=160, unique=True)
     draft = models.BooleanField('Draft', default=False)
+
+    def get_absolute_url(self):  # создаем абс урл котнкретного фильма и вызываем его в movies.movie_list  для переходжа из всего всписка на наш кокретный фильм
+        return reverse("movie_detail", kwargs={"slug": self.url})  # передаем темлейт, в который запихываем наш url, а слаг - это для urls.py
 
     def __str__(self):
         return self.title

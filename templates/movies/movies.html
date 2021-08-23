@@ -279,7 +279,9 @@
                                 </div>
                                 <div class="item-info-product">
                                     <h4 class="">
-                                        <a href="moviesingle.html" class="editContent">{{ movie.title }}</a>
+<!--                                        <a href="/{{ movie.url }}/" class="editContent">{{ movie.title }}</a>   -    это один из мтеодов, но несамый еффективный-->
+<!--                                        <a href="{% url 'movie_detail' movie.url %}" class="editContent">{{ movie.title }}</a> - это второй способо, лучше не тоже не самый ефетивный.. создадим в модели  функцию  get_absolut_url -->
+                               <a href="{{ movie.get_absolute_url }}" class="editContent">{{ movie.title }}</a><!-- таким образом вызываем функцию через нашу модель  -->
                                     </h4>
 
                                     <div class="product_price">
