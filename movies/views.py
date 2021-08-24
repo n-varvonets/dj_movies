@@ -1,7 +1,8 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.views.generic import ListView, DetailView
 from django.views.generic.base import View
 from .models import Movie
+from .forms import *
 
 
 # class MoviesView(View):
@@ -47,4 +48,31 @@ class MovieDetailView(DetailView):
     # шаблон  movie_detail... он строит наш шаблон так <model>_detail -  а выше в MoviesView мы его указали, потому
     #  наше имя шаблона отличается от стандартного постороения <model>_list
 
+"""раб. способ отправки формы отзыва через обычный View"""
+# class AddReview(View):
+#     """Отзывы. Т.к. в UI темлейта используем метод пост для заполнения формы, то нужно его обработать"""
+#     def post(self, request, pk):
+#         # print(request.POST)  # <QueryDict: {'csrfmiddlewaretoken': ['AYUeKVEVCOLKBhpsp8ctwXfbZLfZaXnTvhjhSYt0OJrlyvM1fj1Qg7WOTnYSimWa'], 'text': ['qweqw'], 'name': ['new'], 'email': ['agent@agent.com']}>
+#         return redirect('/')
+"""но можно  и через импорт формы с forms.py c уже указанной моделью и её полями"""
+class AddReview(View):
+    def post(self, request, pk):
+        form = ReviewsForm(request.POST)  # таким способом джанго запонит наши данные, которые пришли с формы
+        """1) крутой способ назанчения полю movie наш обьект фильма с помощью числа(id)"""
+        # if form.is_valid():  # дальше мы можем проверить её на валидность и если все ок, то сохраняем её
+        #     """но т.к. у нас отзыв првязывается на определенный фильм, то нам нужно так же указать к какмоу фильму привязывать наш отзыв"""
+        #     form = form.save(commit=False)  # этой строкой мы говорим что хотим приоставновить сохранение нашкей формы, что внести некие измения в нее перед занисением в бд
+        #     """в поле  movie мы можем должны фильм, к которому нужно привязаться, но т.к. у нас есть только pk нашего
+        #      фильма, то напрямую в это поле мы не можем передать данное число - мы должны передавать обьект фильма...
+        #      это можно сделать через нижнее подчеркивание, потому что есть ForeignKey http://i.imgur.com/3QTCSsU.png"""
+        #     form.movie_id = pk
+        #     form.save()
+        # return redirect('/')
+        """2) второй крутой способ назанчения полю movie наш обьект фильма не с помощью числа(id), а с помощью обьекта"""
+        movie = Movie.objects.get(id=pk)
+        if form.is_valid():
+            form = form.save(commit=False)
+            form.movie = movie
+            form.save()
+        return redirect(movie.get_absolute_url())  # get_absolute_url - для реидректа на ту же самую страницу после остановления комента(поста формы)
 
