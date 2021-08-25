@@ -1,4 +1,5 @@
 {% extends 'movies/base.html' %}
+{% load static %}
 {% block title %} {{ movie.title }} {% endblock title %}
 {% block container %}
 <div class="container py-md-3">
@@ -136,10 +137,14 @@
                     <!-- contact form grid -->
                     <div class="contact-single">
                         <h3 class="editContent">
-                            <span class="sub-tittle editContent">02</span>
+                            <span class="sub-tittle editContent">{{ movie.reviews_set.count }}</span>
                             Оставить отзыв</h3>
-                        <form action="{% url 'add_review' movie.id %}" method="post" class="mt-4">
+                        <!--      2) в самой форме добавим аттрибут  id                  -->
+                        <form action="{% url 'add_review' movie.id %}" method="post" class="mt-4" id="formReview">
+
                             {% csrf_token %}
+                            <!-- Реализуем возможность ответить на отзыв... 1)для этого  добавим скрытое поле для ввода в котором будем передавать id того отзыва на которыйы хотим ответить(нашего родителя)   -->
+                            <input type="hidden" name="parent" id="contactparent" value="">
                             <div class="form-group editContent">
                                 <label for="contactcomment" class="editContent">
                                     Ваш комментарий
@@ -170,36 +175,57 @@
                     </div>
                     <!--  //contact form grid ends here -->
                 </div>
-                {% for review in movie.reviews_set.all %}
-                <div class="media py-5">
-                    <img src="bundles/images/te2.jpg" class="mr-3 img-fluid" alt="image">
-                    <div class="media-body mt-4">
-                        <h5 class="mt-0 editContent">
-                            {{ review.name }}
-                        </h5>
-                        <p class="mt-2 editContent">
-                            {{ review.text }}
-                        </p>
-                        <!--                        ниже ответ на наш отзыв-->
-                        <!--                        <div class="media mt-5 editContent">-->
-                        <!--                            <a class="pr-3" href="#">-->
-                        <!--                                <img src="bundles/images/te1.jpg" class="img-fluid "-->
-                        <!--                                     alt="image" style="outline: none; cursor: inherit;">-->
-                        <!--                            </a>-->
-                        <!--                            <div class="media-body">-->
-                        <!--                                <h5 class="mt-0 editContent"-->
-                        <!--                                    style="outline: none; cursor: inherit;">Leia Organa</h5>-->
-                        <!--                                <p class="mt-2 editContent"-->
-                        <!--                                   style="outline: none; cursor: inherit;"> Cras sit amet-->
-                        <!--                                    nibh libero, in gravida nulla. Nulla vel metus-->
-                        <!--                                    scelerisque ante sollicitudin. Cras purus odio,-->
-                        <!--                                    vestibulum in vulputate at, tempus viverra turpis. Fusce-->
-                        <!--                                    condimentum nunc ac nisi vulputate fringilla..</p>-->
-                        <!--                            </div>-->
-                        <!--                        </div>-->
-                    </div>
-                </div>
-                {% endfor %}
             </div>
+            <!--                { % for review in movie.reviews_set.all % } - возвращает все отзывы по фильму -->
+            <!--5)ниже возращаем все отзывы где парент==ноль через метод которые прописали в model.py, что бы ренедерились только те отзывы у которых нет родителя, т.е. самые первые  -->
+            {% for review in movie.get_review %}
+            <div class="media py-5">
+                <img src="{% static 'images/te2.jpg' %}" class="mr-3 img-fluid" alt="image">
+                <div class="media-body">
+                    <h5 class="mt-0 editContent">
+                        {{ review.name }}
+                    </h5>
+                    <p class="mt-2 editContent">
+                        {{ review.text }}
+                    </p>
+                    <!--  3) теперь к отзываем доавим ссылку(кнопку), что бы могли ответить на отзыва и в href добавим
+                        id  нашей формы что при клике на нее  пользователь поднимался(а не редиректился ) к отправки формы
+                        + добавим функцию  addReview - будем передавть имя  и id  пользователся на который хотим ответить -->
+                    <a href="#formReview" onclick="addReview('{{ review.name }}', '{{ review.id }}')">Ответить</a>
+
+                    <!--   6) влоденные наши отзывы будем отображаться с помощью цикла-->
+                    <!--   6.1) теперь обращаясь к нашему обьекту отзыва и получая все отзывы, которые завязаны на нашем отзыве, то ниже способо мы выводим текст нашего отзыва-->
+                    {% for rew in review.reviews_set.all %}
+
+                    <div class="media mt-5 editContent">
+                        <a class="pr-3" href="#">
+                            <img width="80px" src="{% static 'images/te2.jpg' %}" class="img-fluid" alt="image">
+                        </a>
+                        <div class="media-body">
+                            <h5 class="mt-0 editContent">
+                                {{ rew.name }}
+                            </h5>
+                            <p class="mt-2 editContent">
+                                {{ rew.text }}
+                            </p>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endfor %}
         </div>
-        {% endblock movie %}
+    </div>
+    <!--        4) затем создадим блок скрип и напишем функцию  addReview. Мы сделаем таким образом что id
+                будет подставляться в поле parent, а имя пользователя в само сообщение  -->
+    <!-- 4.1) находим на нашей странице по id поле parent и затем в его аттрибут value  добавляем id , котлорое нам пришло-->
+    <!-- 4.2) затем так же по id  находим наше поле для отзыва и добавляем в него имя пользователя и запятую-->
+    <script>
+            function addReview(name, id) {
+                document.getElementById("contactparent").value = id;
+                document.getElementById("contactcomment").innerText = `${name}, `
+            }
+
+
+    </script>
+    {% endblock movie %}

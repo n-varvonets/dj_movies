@@ -76,6 +76,11 @@ class Movie(models.Model):
     def __str__(self):
         return self.title
 
+    def get_review(self):
+        """возращает нам список наших отзовов прикрепленных к фильму где поле парент будет равно  null...
+        таким образом к нам вернуться только родительские отзывы к нашему фильму"""
+        return self.reviews_set.filter(parent__isnull=True)
+
     class Meta:
         verbose_name = "Movie"
         verbose_name_plural = "Movies"
