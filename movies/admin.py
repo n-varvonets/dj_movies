@@ -1,7 +1,22 @@
+from django import forms
 from django.contrib import admin
 from django.utils.safestring import mark_safe
 
 from .models import *
+from ckeditor_uploader.widgets import CKEditorUploadingWidget  # эта библетеака может загружать также картинкит, а стандартная - только редактировать текстареа
+
+"""для работоспособности редактора ckeditor нужно добавить виджет нашей формы, которая отображается в административной панели"""
+# ищем в документации(https://github.com/django-ckeditor/django-ckeditor) раздел Widget и добавляем
+class MovieAdminForm(forms.ModelForm):
+
+    description = forms.CharField(widget=CKEditorUploadingWidget())  # важно указать поле, в которые хотим запилить над редактор
+
+    class Meta:
+        """данный редактор мы встроем в нашу модель"""
+        model = Movie
+        fields = '__all__'
+
+    # затем данную форму нам нужно подлкючить к нашему классу
 
 
 @admin.register(Category)
@@ -48,6 +63,8 @@ class MovieAdmin(admin.ModelAdmin):
     list_editable = ('draft',) # до(http://i.imgur.com/iJMv07s.png) и после(http://i.imgur.com/5ZnkNE1.png)
     """можно поля M2M/FK  сделать в одну строку. проблема(http://i.imgur.com/oeYfrJR.png) + можно каким угодно способом гурпировать наши поля + давать именна.. т.е. вместо None  указать имя(http://i.imgur.com/lfKNvsZ.png)"""
     readonly_fields = ('get_image', )
+
+    form = MovieAdminForm  # в нашем классе подключаем выше созданную форму для использования редактора ckeditor... Мол вместо стандартной формы, у нас будет еще с подлюченным редактором ckeditor
 
     fieldsets = (
         (None, {
