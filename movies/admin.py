@@ -9,7 +9,7 @@ from ckeditor_uploader.widgets import CKEditorUploadingWidget  # эта библ
 # ищем в документации(https://github.com/django-ckeditor/django-ckeditor) раздел Widget и добавляем
 class MovieAdminForm(forms.ModelForm):
 
-    description = forms.CharField(widget=CKEditorUploadingWidget())  # важно указать поле, в которые хотим запилить над редактор
+    description = forms.CharField(label='Description', widget=CKEditorUploadingWidget())  # важно указать поле, в которые хотим запилить над редактор + label укзывает название поля(http://i.imgur.com/u0RWVzP.png)
 
     class Meta:
         """данный редактор мы встроем в нашу модель"""
