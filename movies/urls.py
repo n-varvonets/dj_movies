@@ -5,6 +5,7 @@ urlpatterns = [
     path('', views.MoviesView.as_view()),
     # path('<int:pk>/', views.MovieDetailView.as_view()),  модель без url and slug, а только через его id
     path('<slug:slug>/', views.MovieDetailView.as_view(), name='movie_detail'),  # данный slug будет ппередан в метод  get into view.py -  а slug -  это уже не int ,а str взятая
-    path('review/<int:pk>/', views.AddReview.as_view(), name='add_review'),  # данный slug будет ппередан в метод  get into view.py -  а slug -  это уже не int ,а str взятая
+    path('review/<int:pk>/', views.AddReview.as_view(), name='add_review'),
+    path('actor-or-director/<str:slug>/', views.ActorOrDirectorView.as_view(), name='actor_or_director_detail'),
 ]
 

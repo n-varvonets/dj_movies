@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.views.generic import ListView, DetailView
 from django.views.generic.base import View
-from .models import Movie, Category
+from .models import Movie, Category, ActorOrDirector
 from .forms import *
 
 
@@ -56,7 +56,7 @@ class MovieDetailView(DetailView):
     # шаблон  movie_detail... он строит наш шаблон так <model>_detail -  а выше в MoviesView мы его указали, потому
     #  наше имя шаблона отличается от стандартного постороения <model>_list
 
-    """рабочий метод для отображения категорий на страницу описания фильма, но он нарушвет DRY... для избежание этого:
+    """рабочий метод для отображения катемгорий на страницу описания фильма, но он нарушвет DRY... для избежание этого:
     1) сделать клас Mixin и занемти внего данный метод  и потом наследовать данный класс Mixins.
     2)  создать отдельный темплейт тег(вот это мы и сделаем)"""
     # def get_context_data(self, *args, **kwargs):
@@ -99,5 +99,12 @@ class AddReview(View):
         return redirect(movie.get_absolute_url())  # get_absolute_url - для реидректа на ту же самую страницу после остановления комента(поста формы)
 
 
+class ActorOrDirectorView(DetailView):
+    """Вывод инофрмации об актере"""
+    model = ActorOrDirector
+    template_name = 'movies/actors_or_directors.html'
+
+    # подбирается слаг нашего конкретного обьекта фильма по его имени, что бы потом можног было подставить его в url вместо id
+    slug_field = "name"
 
 
