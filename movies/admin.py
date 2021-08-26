@@ -64,6 +64,9 @@ class MovieAdmin(admin.ModelAdmin):
     """можно поля M2M/FK  сделать в одну строку. проблема(http://i.imgur.com/oeYfrJR.png) + можно каким угодно способом гурпировать наши поля + давать именна.. т.е. вместо None  указать имя(http://i.imgur.com/lfKNvsZ.png)"""
     readonly_fields = ('get_image', )
 
+    actions = ["publish", "unpublish"]  # регистрируем ниже созданные actions для админке в данной модели movie (https://ibb.co/vw91vG7)
+
+
     form = MovieAdminForm  # в нашем классе подключаем выше созданную форму для использования редактора ckeditor... Мол вместо стандартной формы, у нас будет еще с подлюченным редактором ckeditor
 
     fieldsets = (
@@ -96,6 +99,30 @@ class MovieAdmin(admin.ModelAdmin):
 
     # для того что бы изменить название колонки(http://i.imgur.com/jcu3cH9.png) нужен след метод
     get_image.short_description = 'Poster'
+
+    def unpublish(self, request, queryset):
+        """Снять с публикации"""
+        row_update = queryset.update(draft=True)
+        if row_update == 1:
+            message_bit = "1 запись была обновлена"
+        else:
+            message_bit = f"{row_update} записей были обновлены"
+        self.message_user(request, f"{message_bit}")
+
+    def publish(self, request, queryset):
+        """Опубликовать"""
+        row_update = queryset.update(draft=False)  # обновляем наше поле драфт и устновливет черновик=False
+        if row_update == 1:
+            message_bit = "1 запись была обновлена"
+        else:
+            message_bit = f"{row_update} записей были обновлены"
+        self.message_user(request, f"{message_bit}")
+
+    publish.short_description = "Опубликовать"
+    publish.allowed_permissions = ('change',)  # выше написанный метод publish в queryset следит за измениям ('change',) of  queryset черновика
+
+    unpublish.short_description = "Снять с публикации"
+    unpublish.allowed_permissions = ('change',)
 
 
 @admin.register(Reviews)

@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.views.generic import ListView, DetailView
 from django.views.generic.base import View
-from .models import Movie
+from .models import Movie, Category
 from .forms import *
 
 
@@ -40,6 +40,14 @@ class MoviesView(ListView):
     queryset = Movie.objects.filter(draft=False)
     template_name = "movies/movies.html"
 
+    def get_context_data(self, *args, **kwargs):
+        """для того что бы странице списка фильмов вывести дополнительно категории в нашем классе MoviesView,
+        то нам нужно добавить этот метод"""
+        context = super().get_context_data(*args, **kwargs) #  вызвав метод super нашего родителя мы получаем словарбь данный и занисим его в переменную  context
+        context['categories'] = Category.objects.all()  # в соварь данный заносим новую пару ключ значение с нашими полученными категориями
+        return context
+
+
 
 class MovieDetailView(DetailView):
     """Full description of movie"""
@@ -47,6 +55,15 @@ class MovieDetailView(DetailView):
     slug_field = 'url'  # в данном классе мы не указываем наш темлейт, потому что джанго будет автоматически искать
     # шаблон  movie_detail... он строит наш шаблон так <model>_detail -  а выше в MoviesView мы его указали, потому
     #  наше имя шаблона отличается от стандартного постороения <model>_list
+
+    """рабочий метод для отображения категорий на страницу описания фильма, но он нарушвет DRY... для избежание этого:
+    1) сделать клас Mixin и занемти внего данный метод  и потом наследовать данный класс Mixins.
+    2)  создать отдельный темплейт тег(вот это мы и сделаем)"""
+    # def get_context_data(self, *args, **kwargs):
+    #     """the same method as in MovieDetailView above this"""
+    #     context = super().get_context_data(*args, **kwargs)
+    #     context['categories'] = Category.objects.all()
+    #     return context
 
 """раб. способ отправки формы отзыва через обычный View"""
 # class AddReview(View):
@@ -80,4 +97,7 @@ class AddReview(View):
             form.movie = movie
             form.save()
         return redirect(movie.get_absolute_url())  # get_absolute_url - для реидректа на ту же самую страницу после остановления комента(поста формы)
+
+
+
 
