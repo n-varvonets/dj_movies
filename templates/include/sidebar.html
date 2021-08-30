@@ -8,28 +8,27 @@
     </form>
 </div>
 <!--preference -->
-<div class="left-side my-4">
-    <h3 class="sear-head editContent">Жанры</h3>
-    <ul class="w3layouts-box-list">
-        <!-- "view" у нас из context-а. В ContextMixin в методе get_context_data в context добавляют аттрибут "view" и Уже в
-        самой вьюшке мы выбираем фильмы которые не являются черновиком и получаем года этих фильмов -->
-        {% for genre in view.get_genres %}
-        <!--        почему мы обащаемся к view для получения контекста-->
-        <li class="editContent">
-            <input type="checkbox" class="checked">
-            <span class="span editContent">{{ genre.name }}</span>
-        </li>
-        {% endfor %}
-    </ul>
-</div>
-<!-- // preference -->
-<!-- discounts -->
 
-<!-- div с годами обернем в форму что бы с фронта получать данные не по  GET  в наше view + нужно в
+<!-- div с годами и жанрами обернем в форму что бы с фронта получать данные не по  GET  в наше view + нужно в
 action написать наше урл, который мы для этого прописали в  urls,py  -->
 <form action="{% url 'filter' %}" method="get">
+    <div class="left-side my-4">
+        <h3 class="sear-head editContent">Genres</h3>
+        <ul class="w3layouts-box-list">
+            <!-- "view" у нас из context-а. В ContextMixin в методе get_context_data в context добавляют аттрибут "view" и Уже в
+            самой вьюшке мы выбираем фильмы которые не являются черновиком и получаем года этих фильмов -->
+            {% for genre in view.get_genres %}
+            <!--        почему мы обащаемся к view для получения контекста-->
+            <li class="editContent">
+                <input type="checkbox" class="checked" name="genre" value="{{ genre.id }}">
+                <span class="span editContent">{{ genre.name }}</span>
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+
     <div class="left-side">
-        <h3 class="sear-head editContent">Год</h3>
+        <h3 class="sear-head editContent">Years</h3>
         <ul class="w3layouts-box-list">
             {% for movie in view.get_years %}
             <li class="editContent">
@@ -40,7 +39,7 @@ action написать наше урл, который мы для этого �
             {% endfor %}
         </ul>
     </div>
-    <!--    так же нужно добавить форму для отправки наших данных-->
+    <!--    так же нужно добавить форму для отправки наших данных  -->
     <button type="submit">Find</button>
 </form>
 <!-- //discounts -->

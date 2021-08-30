@@ -1,3 +1,4 @@
+from django.db.models import Q
 from django.shortcuts import render, redirect
 from django.views.generic import ListView, DetailView
 from django.views.generic.base import View
@@ -128,6 +129,21 @@ class FilterMoviesView(GenreYear, ListView):
 
     def get_queryset(self):
         """возращаем queryset там где года будут входить в список, который будет возвращаться с фронтенда"""
-        queryset = Movie.objects.filter(year__in=self.request.GET.getlist("year"))
+        # queryset = Movie.objects.filter(
+        #     year__in=self.request.GET.getlist("year"),
+        #     genres__in=self.request.GET.getlist("genre")
+        # ) в данном queryset запятая - это логическое условие, что у нас олжен совпадать и год и жанр одновременно
+        """ниже способом делаем уже условие и/или"""
+        # queryset = Movie.objects.filter(
+        #     Q(year__in=self.request.GET.getlist("year")) |
+        #     Q(genres__in=self.request.GET.getlist("genre"))
+        # )
+        """правильный фильтр...
+        фильтровать по одному фильтру, если выбран только один, и фильтровать по двум параметрам, если выбраны два"""
+        queryset = Movie.objects.all()
+        if "year" in self.request.GET:
+            queryset = queryset.filter(year__in=self.request.GET.getlist("year"))
+        if "genre" in self.request.GET:
+            queryset = queryset.filter(genres__in=self.request.GET.getlist("genre"))
         return queryset
 
