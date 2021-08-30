@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.views.generic import ListView, DetailView
 from django.views.generic.base import View
-from .models import Movie, Category, ActorOrDirector
+from .models import Movie, Category, ActorOrDirector, Genre
 from .forms import *
 
 
@@ -30,9 +30,22 @@ from .forms import *
 #         print(movie.url, 'and slug is ... = ', slug)
 #         return render(request, 'movies/movie_detail.html', {'movie': movie})  # 3м параметром передаем...
 
+"""можно передавть данные в наши шаблоны не используя темлейт теги, а этом файле view создать класс и 
+потом где нужны доп данные, просто наследовть его в этих моделях импользуя созданные методы в классе(def get_context_dat) и юзать их в наших темплейтах"""
+class GenreYear():
+    # TO DO не пониманию почему мы обращаемся к view в темплейте
+    # "view" у нас из context-а. В ContextMixin в методе get_context_data в context добавляют аттрибут "view" для темлейта
+    """Жанры и года фильмов"""
+    def get_genres(self):
+        return Genre.objects.all()
+
+    def get_years(self):
+        """получаем все года фильмов(не черновик)и с помощью  values забираем из списка фильмов только поле year"""
+        return Movie.objects.filter(draft=False).values('year')
+    
 
 """2222)rewrite above funcs using ListView и DetailView"""
-class MoviesView(ListView):
+class MoviesView(GenreYear, ListView):
     """List of movies  - в данном класе нужно указать: модель, набор уже конкретных
     данных с которыми работаем и темлейт в который эти данные вкладываем"""
     model = Movie
@@ -49,7 +62,7 @@ class MoviesView(ListView):
 
 
 
-class MovieDetailView(DetailView):
+class MovieDetailView(GenreYear, DetailView):
     """Full description of movie"""
     model = Movie
     slug_field = 'url'  # в данном классе мы не указываем наш темлейт, потому что джанго будет автоматически искать
@@ -99,7 +112,7 @@ class AddReview(View):
         return redirect(movie.get_absolute_url())  # get_absolute_url - для реидректа на ту же самую страницу после остановления комента(поста формы)
 
 
-class ActorOrDirectorView(DetailView):
+class ActorOrDirectorView(GenreYear, DetailView):
     """Вывод инофрмации об актере"""
     model = ActorOrDirector
     template_name = 'movies/actors_or_directors.html'
@@ -107,4 +120,14 @@ class ActorOrDirectorView(DetailView):
     # подбирается слаг нашего конкретного обьекта фильма по его имени, что бы потом можног было подставить его в url вместо id
     slug_field = "name"
 
+
+class FilterMoviesView(GenreYear, ListView):
+
+    template_name = 'movies/movies.html'
+
+
+    def get_queryset(self):
+        """возращаем queryset там где года будут входить в список, который будет возвращаться с фронтенда"""
+        queryset = Movie.objects.filter(year__in=self.request.GET.getlist("year"))
+        return queryset
 

@@ -11,55 +11,38 @@
 <div class="left-side my-4">
     <h3 class="sear-head editContent">Жанры</h3>
     <ul class="w3layouts-box-list">
+        <!-- "view" у нас из context-а. В ContextMixin в методе get_context_data в context добавляют аттрибут "view" и Уже в
+        самой вьюшке мы выбираем фильмы которые не являются черновиком и получаем года этих фильмов -->
+        {% for genre in view.get_genres %}
+        <!--        почему мы обащаемся к view для получения контекста-->
         <li class="editContent">
             <input type="checkbox" class="checked">
-            <span class="span editContent">Аниме</span>
+            <span class="span editContent">{{ genre.name }}</span>
         </li>
-        <li class="editContent">
-            <input type="checkbox" class="checked">
-            <span class="span editContent">Боевики</span>
-        </li>
-        <li class="editContent">
-            <input type="checkbox" class="checked">
-            <span class="span editContent">Комедии</span>
-        </li>
-        <li class="editContent">
-            <input type="checkbox" class="checked">
-            <span class="span editContent">Ужасы</span>
-        </li>
+        {% endfor %}
     </ul>
 </div>
 <!-- // preference -->
 <!-- discounts -->
-<div class="left-side">
-    <h3 class="sear-head editContent">Год</h3>
-    <ul class="w3layouts-box-list">
-        <li class="editContent">
-            <input type="checkbox" class="checked">
-            <span class="span editContent">2020</span>
-        </li>
-        <li class="editContent">
-            <input type="checkbox" class="checked">
-            <span class="span editContent">2019</span>
-        </li>
-        <li class="editContent">
-            <input type="checkbox" class="checked">
-            <span class="span editContent">2018</span>
-        </li>
-        <li>
-            <input type="checkbox" class="checked">
-            <span class="span editContent">2017</span>
-        </li>
-        <li class="editContent">
-            <input type="checkbox" class="checked">
-            <span class="span editContent">2016</span>
-        </li>
-        <li class="editContent">
-            <input type="checkbox" class="checked">
-            <span class="span editContent">2015</span>
-        </li>
-    </ul>
-</div>
+
+<!-- div с годами обернем в форму что бы с фронта получать данные не по  GET  в наше view + нужно в
+action написать наше урл, который мы для этого прописали в  urls,py  -->
+<form action="{% url 'filter' %}" method="get">
+    <div class="left-side">
+        <h3 class="sear-head editContent">Год</h3>
+        <ul class="w3layouts-box-list">
+            {% for movie in view.get_years %}
+            <li class="editContent">
+                <!-- так же что бы фильрация работала, то в наш инпут инпут(то, что отправляется) нужно добавить имя(год - то имя, которое будем вытягивать значения во вьюхах) и его value-->
+                <input type="checkbox" class="checked" name="year" value="{{ movie.year }}">
+                <span class="span editContent">{{ movie.year }}</span>
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+    <!--    так же нужно добавить форму для отправки наших данных-->
+    <button type="submit">Find</button>
+</form>
 <!-- //discounts -->
 <!-- reviews -->
 <div class="customer-rev left-side my-4">
