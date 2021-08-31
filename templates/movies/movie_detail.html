@@ -57,21 +57,26 @@
                             <span><b>Сборы в США:</b> ${{ movie.fees_in_usa }}</span></li>
                         <li style="list-style: none"><span><b>Сборы в мире:</b> ${{ movie.fess_in_world }}</span>
                         </li>
-                        <li style="list-style: none">
-                            <a href="#"><b>Рейтинг:</b>
-                                <span class="fa fa-star" aria-hidden="true"
-                                      style="outline: none; cursor: inherit;"></span>
-                                <span class="fa fa-star" aria-hidden="true"
-                                      style="outline: none; cursor: inherit;"></span>
-                                <span class="fa fa-star" aria-hidden="true"
-                                      style="outline: none; cursor: inherit;"></span>
-                                <span class="fa fa-star" aria-hidden="true"
-                                      style="outline: none; cursor: inherit;"></span>
-                                <span class="fa fa-star" aria-hidden="true"
-                                      style="outline: none; cursor: inherit;"></span>
-                                <span class="editContent"
-                                      style="outline: none; cursor: inherit;">5.0</span>
-                            </a>
+                        <li>
+                            <form action="{% url 'add_rating' %}" method="post" name="rating">
+                                <b>Rating</b>
+                                {% csrf_token %}
+                                <!-- добавляем еще одно скрытое поле у котого значение - это id нашего поля, а  name  должно быть movie -->
+                                <input type="hidden" value="{{ movie.id }}" name="movie">
+                                <!-- в тег спан положил цикл for в котором буду перебирать звезды рейтинга... -->
+                                <!--конечно, мы могли передать form star и джанго отрендерил бы нам форму, но джанго по стандарту делает список ( http://i.imgur.com/Eb0Uo6P.png)
+                                в которые вложены поля, поетому мы закастомим это(вручную отрендерить данную форму)-->
+                                <span class="rating">
+                                    <!-- обращаемся к нашему ключу star_form переопредленному полю star и наш ModelChoiceField...-->
+                                    <!-- таким образом мы получаем список наших звезд в виде кортежа -->
+                                    {% for k, v in star_form.fields.star.choices %}
+                                    <!-- в поле id добавляю rating с нашим значением -->
+                                        <input id="rating{{ v }}" name="star" value="{{ k }}" type="radio">
+                                    <!--k(ключ) выводим как описание-->
+                                            <label for="rating{{ v }}">{{ k }}</label>
+                                    {% endfor %}
+                                </span>
+                            </form>
                         </li>
                         <div class="share-desc">
                             <div class="share">
@@ -120,20 +125,20 @@
 
                 </p>
                 <p class="editContent">
-<!--  для того что бы выводились наши теги на  UI, а не как строка(http://i.imgur.com/mZlmlbd.png),
- а сразу с преобразованием, то нужно добавить фильтр safe - это для использование редактора ckeditor в админке django и plugin youtube -->
+                    <!--  для того что бы выводились наши теги на  UI, а не как строка(http://i.imgur.com/mZlmlbd.png),
+                     а сразу с преобразованием, то нужно добавить фильтр safe - это для использование редактора ckeditor в админке django и plugin youtube -->
                     {{ movie.description|safe }}
                 </p>
-<!--                <p class="mt-3 italic-blue editContent"-->
-<!--                   style="outline: none; cursor: inherit;">-->
-<!--                    <iframe width="560" height="315"-->
-<!--                            src="https://www.youtube.com/embed/A36LahZNUiE?controls=0"-->
-<!--                            frameborder="0" allow="accelerometer; autoplay;-->
-<!--                                                                           encrypted-media; gyroscope; picture-in-picture"-->
-<!--                            allowfullscreen>-->
+                <!--                <p class="mt-3 italic-blue editContent"-->
+                <!--                   style="outline: none; cursor: inherit;">-->
+                <!--                    <iframe width="560" height="315"-->
+                <!--                            src="https://www.youtube.com/embed/A36LahZNUiE?controls=0"-->
+                <!--                            frameborder="0" allow="accelerometer; autoplay;-->
+                <!--                                                                           encrypted-media; gyroscope; picture-in-picture"-->
+                <!--                            allowfullscreen>-->
 
-<!--                    </iframe>-->
-<!--                </p>-->
+                <!--                    </iframe>-->
+                <!--                </p>-->
             </div>
             <hr>
             <div class="row">
@@ -229,5 +234,11 @@
                 document.getElementById("contactparent").value = id;
                 document.getElementById("contactcomment").innerText = `${name}, `
             }
+
+
+
+
+
+
     </script>
     {% endblock movie %}

@@ -106,11 +106,12 @@ class RatingStar(models.Model):
     value = models.SmallIntegerField("Value", default=0)
 
     def __str__(self):
-        return self.value
+        return str(self.value)
 
     class Meta:
-        verbose_name = "Star of rating"
+        verbose_name = "Star of rat ing"
         verbose_name_plural = "Stars of rating"
+        ordering = ['-value']  # для того что бы выводились отсортированные звёзды по своему значению отсротированные в нужном нам порядке(line 65 at the mpoment writing)
 
 
 class Rating(models.Model):

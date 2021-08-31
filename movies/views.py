@@ -1,4 +1,5 @@
 from django.db.models import Q
+from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.views.generic import ListView, DetailView
 from django.views.generic.base import View
@@ -54,6 +55,7 @@ class MoviesView(GenreYear, ListView):
     queryset = Movie.objects.filter(draft=False)
     template_name = "movies/movies.html"
 
+
     def get_context_data(self, *args, **kwargs):
         """для того что бы странице списка фильмов вывести дополнительно категории в нашем классе MoviesView,
         то нам нужно добавить этот метод"""
@@ -70,8 +72,15 @@ class MovieDetailView(GenreYear, DetailView):
     # шаблон  movie_detail... он строит наш шаблон так <model>_detail -  а выше в MoviesView мы его указали, потому
     #  наше имя шаблона отличается от стандартного постороения <model>_list
 
+    def get_context_data(self, **kwargs):
+        """передаем созданную форму с нашими зевздами в  шаблон/темплейт по ключу star_form"""
+        context = super().get_context_data(**kwargs)  #  в переменную  context заносим работу родительского метода  get_context_data
+        context['star_form'] = RatingForm()
+
+        return context
+
     """рабочий метод для отображения катемгорий на страницу описания фильма, но он нарушвет DRY... для избежание этого:
-    1) сделать клас Mixin и занемти внего данный метод  и потом наследовать данный класс Mixins.
+    1) сделать клас Mixin и занемти внего данный метод  и потом наследовать данн ый класс Mixins.
     2)  создать отдельный темплейт тег(вот это мы и сделаем)"""
     # def get_context_data(self, *args, **kwargs):
     #     """the same method as in MovieDetailView above this"""
@@ -86,6 +95,38 @@ class MovieDetailView(GenreYear, DetailView):
 #         # print(request.POST)  # <QueryDict: {'csrfmiddlewaretoken': ['AYUeKVEVCOLKBhpsp8ctwXfbZLfZaXnTvhjhSYt0OJrlyvM1fj1Qg7WOTnYSimWa'], 'text': ['qweqw'], 'name': ['new'], 'email': ['agent@agent.com']}>
 #         return redirect('/')
 """но можно  и через импорт формы с forms.py c уже указанной моделью и её полями"""
+
+
+class AddStarRating(View):
+    '''Добавленипе рейтинга к фильму'''
+    def get_client_ip(self, request):
+        """получаем ip нашего клиента"""
+        x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
+        if x_forwarded_for:
+            ip = x_forwarded_for.split(',')[0]
+        else:
+            ip = request.META.get('REMOTE_ADDR')
+        return ip
+
+    def post(self, request):
+        form = RatingForm(request.POST)
+
+        """когда к нам придет пост запрос, тогда в нашу форму мы пердадим полунные данные с поста"""
+        if form.is_valid():
+            """т.к. один и тот же клиент не может устноватить разные рейтинги к оденому фильму"""
+            Rating.objects.update_or_create(
+                ip=self.get_client_ip(request),  # в данном методе мы будем получать айли клиента, который отправил нам запрос
+                movie_id=int(request.POST.get("movie")),  #  в данное поле мы передаем поле movie  из нашего  post запроса... эти данные на приходят с нашего скрытого поля movie в templates.movie_detail
+                defaults={'star_id': int(request.POST.get('star'))}  # (поле /radio  значения самой звезды) в наше поле мы должны
+                # перебрать словарь и ключ того значения, которое хотим изменить и значение на которое мы меняешм в том случае если
+                # найлем такую запись. Т.е. если такая запись будет найдена, то у нас только поменяется значение звезды, а муви и айпи - остануться
+            )
+            return HttpResponse(status=201)
+        else:
+            return HttpResponse(staus=400)
+
+
+
 class AddReview(View):
     def post(self, request, pk):
         form = ReviewsForm(request.POST)  # таким способом джанго запонит наши данные, которые пришли с формы
