@@ -205,3 +205,27 @@ class FilterMoviesView(GenreYear, ListView):
         context['genre'] = ''.join([f'genre={x}&' for x in self.request.GET.getlist("genre")])
         return context
 
+
+class Search(GenreYear, ListView):
+    """Организуем класс для нашего поиска"""
+
+    template_name = 'movies/movies.html'
+
+    paginate_by = 2
+
+    def get_queryset(self):
+        return Movie.objects.filter(title__icontains=self.request.GET.get('search-input-q'))  # 1)фильтруем наши фильмы по полю title , которое доставли из ключа search-input-q
+        # 2)применяем доп.параметр __icontains для того что бы у нас не учитывался регистр
+        # 3)сравниваем по тем параметрам которые к нам пришли
+
+    def get_context_data(self, *args, **kwargs):
+        context = super(Search, self).get_context_data(*args, **kwargs)
+        """для работы пагинации лобавляем ключ, который передадим в наш темлейт + не забудь указать новый укл для поиска"""
+        # context['key-search-q-for-pagination'] = self.request.GET.get('search-input-q')
+        """что бы в темплейте не писать в темлейте правильную ссылку подобным образом  как для строки выше, 
+        <a href="?q={{ q }}&{{ genre }}{{ year }}page=1">1</a> , то можно сразу сгенерить ссылку здесь"""
+        context['key_search_q_for_pagination'] = f"q={self.request.GET.get('search-input-q')}&"
+        return context
+
+
+
