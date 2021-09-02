@@ -80,6 +80,10 @@ class MovieDetailView(GenreYear, DetailView):
         context = super().get_context_data(**kwargs)  #  в переменную  context заносим работу родительского метода  get_context_data
         context['star_form'] = RatingForm()
 
+        #  т.к. в деталях к фильму при вводе отзыва мы хотим добавить форму  рекапчи, то добавим созданную форму
+        #  которую передадим в темплей и будем обращаться к ней по ключу
+        context['form'] = ReviewsForm()
+
         return context
 
     """рабочий метод для отображения катемгорий на страницу описания фильма, но он нарушвет DRY... для избежание этого:
