@@ -55,6 +55,9 @@ class MoviesView(GenreYear, ListView):
     queryset = Movie.objects.filter(draft=False)
     template_name = "movies/movies.html"
 
+    #  гвоорит нам какое кол-во стр
+    paginate_by = 3
+
 
     def get_context_data(self, *args, **kwargs):
         """для того что бы странице списка фильмов вывести дополнительно категории в нашем классе MoviesView,
@@ -165,6 +168,9 @@ class ActorOrDirectorView(GenreYear, DetailView):
 
 class FilterMoviesView(GenreYear, ListView):
 
+    # добавим что бы при фильтре жанров фильмов в сайдбаре выводило бы пагинацию
+    paginate_by = 1
+
     template_name = 'movies/movies.html'
 
 
@@ -187,4 +193,15 @@ class FilterMoviesView(GenreYear, ListView):
         if "genre" in self.request.GET:
             queryset = queryset.filter(genres__in=self.request.GET.getlist("genre"))
         return queryset
+
+    def get_context_data(self, *args, **kwargs):
+        context = super(FilterMoviesView, self).get_context_data(*args, **kwargs)
+        #  в данный конекст мы добваим два ключа (года и жанры)
+        #  что бы мы могли передавть в шаблон для подставки в урл пагинации выбранный фильтр
+
+        """т.к. нам приходит список выбранных готов или жанров, то из данного риквеста мы можем зараннее сформировать
+         завдовомо верную ссылку что бы в темплейте её просто подставитбь в урл пагинации"""
+        context['year'] = ''.join([f'year={x}&' for x in self.request.GET.getlist("year")])  # приходит список выбранных при фильтре в сайдбаре годов от клиента
+        context['genre'] = ''.join([f'genre={x}&' for x in self.request.GET.getlist("genre")])
+        return context
 

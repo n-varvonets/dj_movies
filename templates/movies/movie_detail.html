@@ -11,7 +11,7 @@
         {% block movie %}
         <div class="left-ads-display col-lg-8">
             <div class="row">
-                <div class="desc1-left col-md-6">
+                <div class="desc1-left col-md-6" >
                     <img src="{{ movie.poster.url }}" class="img-fluid" alt="">
                 </div>
                 <div class="desc1-right col-md-6 pl-lg-4">
@@ -60,6 +60,11 @@
                         <li>
                             <form action="{% url 'add_rating' %}" method="post" name="rating">
                                 <b>Rating</b>
+                                {% if star_form.fields.star.choices is defined %}
+                                    The variable is empty.
+
+                                {% else %}
+
                                 {% csrf_token %}
                                 <!-- добавляем еще одно скрытое поле у котого значение - это id нашего поля, а  name  должно быть movie -->
                                 <input type="hidden" value="{{ movie.id }}" name="movie">
@@ -75,6 +80,7 @@
                                     <!--k(ключ) выводим как описание-->
                                             <label for="rating{{ v }}">{{ k }}</label>
                                     {% endfor %}
+                                    {% endif %}
                                 </span>
                             </form>
                         </li>

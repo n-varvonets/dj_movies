@@ -11,7 +11,7 @@
 
 <!-- div с годами и жанрами обернем в форму что бы с фронта получать данные не по  GET  в наше view + нужно в
 action написать наше урл, который мы для этого прописали в  urls,py  -->
-<form action="{% url 'filter' %}" method="get">
+<form action="{% url 'filter' %}" method="get" name="filter">
     <div class="left-side my-4">
         <h3 class="sear-head editContent">Genres</h3>
         <ul class="w3layouts-box-list">
