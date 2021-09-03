@@ -13,6 +13,7 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+from django.conf.urls.i18n import i18n_patterns
 from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
@@ -20,10 +21,24 @@ from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+
+    #  добавляем путь для преключения языков
+    path('i18n/', include('django.conf.urls.i18n')),
+
     path('ckeditor/', include('ckeditor_uploader.urls')),
-    path('contact/', include('contact.urls')),
-    path('', include('movies.urls')),  # регестрируем файл урл в дир мувис
 ]
+
+
+# и так же создаем раздел urlpatterns для указания на каких страницах делать переводить наш текст
+urlpatterns += i18n_patterns(
+    # в моем случае это:
+    # 1) контакты
+    path('contact/', include('contact.urls')),
+    # 2) наши фильмы
+    path('', include('movies.urls')),  # регестрируем файл урл в дир мувис
+
+)
+
 
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -2,14 +2,22 @@ from django import forms
 from django.contrib import admin
 from django.utils.safestring import mark_safe
 
+# для возможни указать моделей которые будут осуществлять перевожд данных в админки
+from modeltranslation.admin import TranslationAdmin
+
+
 from .models import *
 from ckeditor_uploader.widgets import CKEditorUploadingWidget  # эта библетеака может загружать также картинкит, а стандартная - только редактировать текстареа
 
 """для работоспособности редактора ckeditor нужно добавить виджет нашей формы, которая отображается в административной панели"""
 # ищем в документации(https://github.com/django-ckeditor/django-ckeditor) раздел Widget и добавляем
 class MovieAdminForm(forms.ModelForm):
+    """форма с виджетом ckeditor"""
 
-    description = forms.CharField(label='Description', widget=CKEditorUploadingWidget())  # важно указать поле, в которые хотим запилить над редактор + label укзывает название поля(http://i.imgur.com/u0RWVzP.png)
+    #  т.к. в редакторе мы используем ckeditor и то нужно указать поля с наим виджетом
+    description_fr = forms.CharField(label='Description', widget=CKEditorUploadingWidget())
+    description_ru = forms.CharField(label='Description', widget=CKEditorUploadingWidget())  # важно указать поле, в которые хотим запилить над редактор + label укзывает название поля(http://i.imgur.com/u0RWVzP.png)
+    description_en = forms.CharField(label='Description', widget=CKEditorUploadingWidget())
 
     class Meta:
         """данный редактор мы встроем в нашу модель"""
@@ -20,7 +28,8 @@ class MovieAdminForm(forms.ModelForm):
 
 
 @admin.register(Category)
-class CategoryAdmin(admin.ModelAdmin):
+# class CategoryAdmin(admin.ModelAdmin):  # работает в обычном режиме, но если я хочу указать модель в ктором будет же моя мультиязычность
+class CategoryAdmin(TranslationAdmin):
     list_display = ('id', 'name', 'url')  #  позволяет конфигурировать список наших записей(что отображать в админке)... до(http://i.imgur.com/epAlKDe.png) и после(http://i.imgur.com/H5v3LOi.png)
     list_display_links = ('name',)  # нажимая на имя категории мы переходим на нашу запись
 
@@ -46,7 +55,8 @@ class MoviesShotsInline(admin.TabularInline):
 
 
 @admin.register(Movie)
-class MovieAdmin(admin.ModelAdmin):
+# class MovieAdmin(admin.ModelAdmin):
+class MovieAdmin(TranslationAdmin):
     list_display = ('id',  'category', 'url', 'draft',)
     """можно в админке добавить по чем фильтровать наши записи"""
     list_filter = ('category', 'year')  # http://i.imgur.com/ACSyO0M.png
@@ -133,13 +143,13 @@ class ReviewsAdmin(admin.ModelAdmin):
 
 
 @admin.register(Genre)
-class GenreAdmin(admin.ModelAdmin):
+class GenreAdmin(TranslationAdmin):
     """Жанры"""
     list_display = ("name", "url")
 
 
 @admin.register(ActorOrDirector)
-class ActorAdmin(admin.ModelAdmin):
+class ActorAdmin(TranslationAdmin):
     """Актеры"""
     list_display = ("name", "age", 'get_image')  # 4) и затем добавляем имя нашего метода
     readonly_fields = ('get_image', )
@@ -158,7 +168,7 @@ class RatingAdmin(admin.ModelAdmin):
 
 
 @admin.register(MovieShots)
-class MovieShotsAdmin(admin.ModelAdmin):
+class MovieShotsAdmin(TranslationAdmin):
     """Кадры из фильма"""
     list_display = ("title", "movie", 'get_image' )
     readonly_fields = ('get_image',)

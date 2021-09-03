@@ -1,6 +1,6 @@
-{% load movie_tag %}
+{% load i18n movie_tag %}
 <div class="search-bar w3layouts-newsletter">
-    <h3 class="sear-head editContent">Поиск фильма</h3>
+    <h3 class="sear-head editContent">{% trans 'Movie Search' %}</h3>
     <form action="{% url 'search' %}" method="get" class="d-flex editContent"><!--так же важно указать что при поиске - будет метод  get -->
         <input type="search" placeholder="Введите название..." name="search-input-q" class="form-control"
                required=""><!--в вью поле для ввода именуем search-q -->
@@ -13,7 +13,7 @@
 action написать наше урл, который мы для этого прописали в  urls,py  -->
 <form action="{% url 'filter' %}" method="get" name="filter">
     <div class="left-side my-4">
-        <h3 class="sear-head editContent">Genres</h3>
+        <h3 class="sear-head editContent">{% trans 'Genres' %}</h3>
         <ul class="w3layouts-box-list">
             <!-- "view" у нас из context-а. В ContextMixin в методе get_context_data в context добавляют аттрибут "view" и Уже в
             самой вьюшке мы выбираем фильмы которые не являются черновиком и получаем года этих фильмов -->
@@ -28,7 +28,7 @@ action написать наше урл, который мы для этого �
     </div>
 
     <div class="left-side">
-        <h3 class="sear-head editContent">Years</h3>
+        <h3 class="sear-head editContent">{% trans 'Years' %}</h3>
         <ul class="w3layouts-box-list">
             {% for movie in view.get_years %}
             <li class="editContent">
@@ -40,12 +40,12 @@ action написать наше урл, который мы для этого �
         </ul>
     </div>
     <!--    так же нужно добавить форму для отправки наших данных  -->
-    <button type="submit">Find</button>
+    <button type="submit">{% trans 'Find' %}</button>
 </form>
 <!-- //discounts -->
 <!-- reviews -->
 <div class="customer-rev left-side my-4">
-    <h3 class="sear-head editContent">Рейтинг</h3>
+    <h3 class="sear-head editContent">{% trans 'Rating'  %}</h3>
     <ul class="w3layouts-box-list">
         <li>
             <a href="#">
@@ -55,46 +55,6 @@ action написать наше урл, который мы для этого �
                 <span class="fa fa-star" aria-hidden="true"></span>
                 <span class="fa fa-star" aria-hidden="true"></span>
                 <span class="editContent">5.0</span>
-            </a>
-        </li>
-        <li>
-            <a href="#">
-                <span class="fa fa-star" aria-hidden="true"></span>
-                <span class="fa fa-star" aria-hidden="true"></span>
-                <span class="fa fa-star" aria-hidden="true"></span>
-                <span class="fa fa-star" aria-hidden="true"></span>
-                <span class="fa fa-star-o" aria-hidden="true"></span>
-                <span class="editContent">4.0</span>
-            </a>
-        </li>
-        <li>
-            <a href="#">
-                <span class="fa fa-star" aria-hidden="true"></span>
-                <span class="fa fa-star" aria-hidden="true"></span>
-                <span class="fa fa-star" aria-hidden="true"></span>
-                <span class="fa fa-star-half-o" aria-hidden="true"></span>
-                <span class="fa fa-star-o" aria-hidden="true"></span>
-                <span class="editContent">3.5</span>
-            </a>
-        </li>
-        <li>
-            <a href="#">
-                <span class="fa fa-star" aria-hidden="true"></span>
-                <span class="fa fa-star" aria-hidden="true"></span>
-                <span class="fa fa-star" aria-hidden="true"></span>
-                <span class="fa fa-star-o" aria-hidden="true"></span>
-                <span class="fa fa-star-o" aria-hidden="true"></span>
-                <span class="editContent">3.0</span>
-            </a>
-        </li>
-        <li>
-            <a href="#">
-                <span class="fa fa-star" aria-hidden="true"></span>
-                <span class="fa fa-star" aria-hidden="true"></span>
-                <span class="fa fa-star-half-o" aria-hidden="true"></span>
-                <span class="fa fa-star-o" aria-hidden="true"></span>
-                <span class="fa fa-star-o" aria-hidden="true"></span>
-                <span class="editContent">2.5</span>
             </a>
         </li>
     </ul>

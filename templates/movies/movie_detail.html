@@ -1,5 +1,5 @@
 {% extends 'movies/base.html' %}
-{% load static %}
+{% load static i18n %}
 {% block title %} {{ movie.title }} {% endblock title %}
 {% block container %}
 <div class="container py-md-3">
@@ -21,15 +21,15 @@
                     <h5 class="editContent"></h5>
                     <ul>
                         <li style="list-style: none">
-                            <span><b>Год:</b> {{ movie.year }}</span></li>
-                        <li style="list-style: none">
-                            <span><b>Страна:</b> {{ movie.country }}</span>
+                            <span><b>{% trans 'Year:' %}</b> {{ movie.year }}</span></li>
+                        <li>
+                            <span><b>{% trans 'Country:' %}</b> {{ movie.country }}</span>
                         </li>
-                        <li style="list-style: none">
-                            <span><b>Слоган:</b> {{ movie.tagline }}</span>
+                        <li>
+                            <span><b>{% trans 'Tagline:' %}</b> {{ movie.tagline }}</span>
                         </li>
-                        <li style="list-style: none">
-                                    <span><b>Режиссер:</b>
+                        <li>
+                                    <span><b>{% trans 'Director by:' %}</b>
                                         {% for director in movie.directors.all %}
                                         <!-- в качестве уникального обьекта передаем его слаг(имя)-->
                                         <a href="{% url 'actor_or_director_detail' director.name %}">{{ director.name }}</a>
@@ -37,25 +37,25 @@
                                         {% endfor %}
                                     </span>
                         </li>
-                        <li style="list-style: none"><span><b>Актеры:</b>
+                        <li><span><b>{% trans 'Actors:' %}</b>
                                     {% for actor in movie.actors.all %}
                                         <a href="{% url 'actor_or_director_detail' actor.name %}">{{ actor.name }}</a>
                                     {% endfor %}
                                 </span>
                         </li>
-                        <li style="list-style: none"><span><b>Жанр:</b>
+                        <li><span><b>{% trans 'Genre:' %}</b>
                                     {% for genre in movie.genres.all %}
                                         {{ genre.name }}
                                     {% endfor %}
                                     </span>
                         </li>
-                        <li style="list-style: none"><span><b>Премьера в мире:</b> {{ movie.world_premiere }}</span>
+                        <li style="list-style: none"><span><b>{% trans 'Premier in world:' %}</b> {{ movie.world_premiere }}</span>
                         </li>
                         <li style="list-style: none">
-                            <span><b>Бюджет:</b> ${{ movie.budget }}</span></li>
+                            <span><b>{% trans 'Budget:' %}</b> ${{ movie.budget }}</span></li>
                         <li style="list-style: none">
-                            <span><b>Сборы в США:</b> ${{ movie.fees_in_usa }}</span></li>
-                        <li style="list-style: none"><span><b>Сборы в мире:</b> ${{ movie.fess_in_world }}</span>
+                            <span><b>{% trans 'Fees in USA:' %}</b> ${{ movie.fees_in_usa }}</span></li>
+                        <li style="list-style: none"><span><b>{% trans "Fees in world:" %}</b> ${{ movie.fess_in_world }}</span>
                         </li>
                         <li>
                             <form action="{% url 'add_rating' %}" method="post" name="rating">
@@ -120,7 +120,7 @@
             <div class="row sub-para-w3layouts mt-5">
 
                 <h3 class="shop-sing editContent" style="outline: none; cursor: inherit;">
-                    О фильме {{ movie.title }}
+                    {% trans 'About movie' %}{{ movie.title }}
                 </h3>
                 <p>
                     {% for image in movie.movieshots_set.all %}
@@ -153,7 +153,7 @@
                     <div class="contact-single">
                         <h3 class="editContent">
                             <span class="sub-tittle editContent">{{ movie.reviews_set.count }}</span>
-                            Оставить отзыв</h3>
+                            {% trans 'Leave a review' %}</h3>
                         <!--      2) в самой форме добавим аттрибут  id                  -->
                         <form action="{% url 'add_review' movie.id %}" method="post" class="mt-4" id="formReview">
 
@@ -162,7 +162,7 @@
                             <input type="hidden" name="parent" id="contactparent" value="">
                             <div class="form-group editContent">
                                 <label for="contactcomment" class="editContent">
-                                    Ваш комментарий
+                                    {% trans 'Your Comments' %}
                                     *</label>
 <!--                                <textarea class="form-control border" rows="5" name="text"-->
 <!--                                          id="contactcomment" required=""></textarea>-->
@@ -171,7 +171,7 @@
                             <div class="d-sm-flex">
                                 <div class="col-sm-6 form-group p-0 editContent">
                                     <label for="contactusername" class="editContent">
-                                        Имя *
+                                        {% trans 'Name *' %}
                                     </label>
 <!--      раб код но без рекпчи           <input type="text" class="form-control border" name="name"-->
 <!--                                           id="contactusername" required="">-->
@@ -189,7 +189,7 @@
                                 {{ form.captcha }}
                             </div>
                             <button type="submit" class="mt-3 btn btn-success btn-block py-3">
-                                Отправить
+                                {% trans 'Send' %}
                             </button>
                         </form>
                     </div>
@@ -245,11 +245,6 @@
                 document.getElementById("contactparent").value = id;
                 document.getElementById("contactcomment").innerText = `${name}, `
             }
-
-
-
-
-
 
     </script>
     {% endblock movie %}

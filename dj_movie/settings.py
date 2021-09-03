@@ -32,6 +32,9 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    # перед admin  прописываем установленную библитеку для мультиязычности(пееред админкой)
+    'modeltranslation',
+
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -52,6 +55,10 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+
+    # добавим наже модуль для мультиязычности
+    'django.middleware.locale.LocaleMiddleware',
+
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -122,6 +129,16 @@ USE_I18N = True
 USE_L10N = True
 
 USE_TZ = True
+
+
+# добавляем языке на которых хотим делать перевод
+gettext = lambda s:s
+# зависит в каком порядке пмы поставим, потому что дефолту уже созданные данные в бд определяются как первое. И переводиться будет с первого на 2,3... языки
+LANGUAGES = (
+    ('en', gettext('English')),
+    ('ru', gettext('Russia')),
+    ('fr', gettext('France')),
+)
 
 
 # Static files (CSS, JavaScript, Images)
