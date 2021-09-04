@@ -41,9 +41,12 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.sites',
 
     # external apps
     'ckeditor',
+    'allauth',
+    'allauth.account',
     'ckeditor_uploader',
     'snowpenguin.django.recaptcha3',
 
@@ -97,6 +100,11 @@ DATABASES = {
     }
 }
 
+AUTHENTICATION_BACKENDS = (
+    'django.contrib.auth.backends.ModelBackend',
+    'allauth.account.auth_backends.AuthenticationBackend',
+)
+
 
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
@@ -130,6 +138,11 @@ USE_L10N = True
 
 USE_TZ = True
 
+ACCOUNT_EMAIL_CONFIRMATION_EXPIRE_DAYS = 1
+ACCOUNT_USERNAME_MIN_LENGTH = 4
+LOGIN_REDIRECT_URL = "/"
+
+EMAIL_BACKEND = 'django.core.mail.backends.dummy.EmailBackend'
 
 # добавляем языке на которых хотим делать перевод
 gettext = lambda s:s
@@ -157,6 +170,7 @@ else:
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
 
 
 MEDIA_URL = '/media/'
@@ -235,4 +249,6 @@ RECAPTCHA_PRIVATE_KEY = "6LdP1T4cAAAAAL3bISXwIURC7offr5za92Pt6mvO"
 RECAPTCHA_DEFAULT_ACTION = 'generic'
 RECAPTCHA_SCORE_THRESHOLD = 0.5
 
+
+SITE_ID = 1
 

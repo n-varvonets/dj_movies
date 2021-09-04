@@ -4,8 +4,6 @@ from snowpenguin.django.recaptcha3.fields import ReCaptchaField
 from .models import Reviews, RatingStar, Rating
 
 
-
-
 class ReviewsForm(forms.ModelForm):
     """Формы отзывов"""
 
@@ -41,5 +39,5 @@ class RatingForm(forms.ModelForm):
         model = Rating
         fields = ("star",)
 
-    """  итого у нас получалась форма для заполнения(выбор ModelChoiceField из всех звезд которые мы взяли с с модели RatingStar)"""
+    """итого у нас получалась форма для заполнения(выбор ModelChoiceField из всех звезд которые мы взяли с с модели RatingStar)"""
 

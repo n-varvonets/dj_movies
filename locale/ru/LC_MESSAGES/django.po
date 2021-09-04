@@ -28,15 +28,23 @@ msgstr "Main"
 msgid "Categories"
 msgstr "Catégories"
 
-#: templates/include/header.html:30
+#: templates/include/header.html:34
+msgid "Exit"
+msgstr "Sortie"
+
+#: templates/include/header.html:36
 msgid "Enter"
 msgstr "Entrez"
 
-#: templates/include/header.html:58
+#: templates/include/header.html:37
+msgid "Registration"
+msgstr "Регистрация"
+
+#: templates/include/header.html:66
 msgid "the best site on django 3"
 msgstr "le meilleur site sur django 3"
 
-#: templates/include/header.html:59
+#: templates/include/header.html:67
 msgid "All about movies"
 msgstr "Tout sur les films"
 

@@ -16,18 +16,26 @@
                 <li>
                     <!-- First Tier Drop Down -->
                     <label for="drop-2" class="toggle">{% trans 'Categories' %}<span class="fa fa-angle-down"
-                                                                       aria-hidden="true"></span> </label>
+                                                                                     aria-hidden="true"></span> </label>
                     <a href="#">{% trans 'Categories' %}<span class="fa fa-angle-down" aria-hidden="true"></span></a>
                     <input type="checkbox" id="drop-2">
                     <ul>
-<!-- ниже строка выгружает функцию из templatetags и беерт список всех категорий для их отображения -->
+                        <!-- ниже строка выгружает функцию из templatetags и беерт список всех категорий для их отображения -->
                         {% get_categories as categories %}
                         {% for category in categories %}
                         <li><a href="/">{{ category.name }}</a></li>
                         {% endfor %}
                     </ul>
                 </li>
-                <li><a href="contact.html">{% trans 'Enter' %}</a>
+                <li>
+                    {% if user.is_authenticated %}
+                    <!--                <li><a href="contact.html">{ % trans 'Enter' % }</a>-->
+                    <!-- переоплределим урл на ссылку входа, который нам пришла из  allauth templates/account/  -->
+    <span>{{ user.username }}</span><a href="{% url 'account_logout' %}">{% trans 'Exit' %}</a>
+                    {% else %}
+                    <a href="{% url 'account_login' %}">{% trans 'Enter' %}</a>
+                    <a href="{% url 'account_signup' %}">{% trans 'Registration' %}</a>
+                    {% endif %}
                 </li>
 
                 <li>
@@ -38,10 +46,10 @@
                             {% get_available_languages as LANGUAGES %}
                             {% get_language_info_list for LANGUAGES as languages %}
                             {% for language in languages %}
-                                <option value="{{ language.code }}"{% if language.code == LANGUAGE_CODE %}
-                                        selected{% endif %}>
-                                    {{ language.name_local }} ({{ language.code }})
-                                </option>
+                            <option value="{{ language.code }}" {% if language.code == LANGUAGE_CODE %}
+                                    selected{% endif %}>
+                                {{ language.name_local }} ({{ language.code }})
+                            </option>
                             {% endfor %}
                         </select>
                         <input type="submit" value="Go">

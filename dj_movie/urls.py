@@ -31,11 +31,14 @@ urlpatterns = [
 
 # и так же создаем раздел urlpatterns для указания на каких страницах делать переводить наш текст
 urlpatterns += i18n_patterns(
+    path('accounts/', include('allauth.urls')),
+
     # в моем случае это:
     # 1) контакты
     path('contact/', include('contact.urls')),
     # 2) наши фильмы
     path('', include('movies.urls')),  # регестрируем файл урл в дир мувис
+
 
 )
 
