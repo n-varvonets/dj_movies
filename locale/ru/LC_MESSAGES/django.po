@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-09-03 16:56+0300\n"
+"POT-Creation-Date: 2021-09-06 10:44+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -20,205 +20,112 @@ msgstr ""
 "%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || (n"
 "%100>=11 && n%100<=14)? 2 : 3);\n"
 
+
 #: templates/include/header.html:15
 msgid "Main"
-msgstr "Main"
+msgstr "Главная"
 
 #: templates/include/header.html:18 templates/include/header.html:20
 msgid "Categories"
-msgstr "Catégories"
+msgstr "Категории"
 
 #: templates/include/header.html:34
 msgid "Exit"
-msgstr "Sortie"
+msgstr "Выход"
 
 #: templates/include/header.html:36
 msgid "Enter"
-msgstr "Entrez"
+msgstr "Вход"
 
 #: templates/include/header.html:37
 msgid "Registration"
 msgstr "Регистрация"
 
-#: templates/include/header.html:66
+#: templates/include/header.html:77
 msgid "the best site on django 3"
-msgstr "le meilleur site sur django 3"
+msgstr "лучший сайт на джанго 3"
 
-#: templates/include/header.html:67
+#: templates/include/header.html:78
 msgid "All about movies"
-msgstr "Tout sur les films"
+msgstr "Все о фильмах"
 
 #: templates/include/sidebar.html:3
 msgid "Movie Search"
-msgstr "Recherche de films"
+msgstr "Поиск фильмов"
 
 #: templates/include/sidebar.html:16
 msgid "Genres"
-msgstr "Genres"
+msgstr "Жанры"
 
 #: templates/include/sidebar.html:31
 msgid "Years"
-msgstr "Années"
+msgstr "Года"
 
 #: templates/include/sidebar.html:43
 msgid "Find"
-msgstr "Trouvez"
+msgstr "Найти"
 
 #: templates/include/sidebar.html:48
 msgid "Rating"
-msgstr "Classement"
+msgstr "Рейтинг"
 
 #: templates/movies/movie_detail.html:24
-#, fuzzy
-#| msgid "Year"
 msgid "Year:"
-msgstr "Année"
+msgstr "Год"
 
 #: templates/movies/movie_detail.html:26
 msgid "Country:"
-msgstr "Pays"
+msgstr "Страна"
 
 #: templates/movies/movie_detail.html:29
-#, fuzzy
-#| msgid "Tagline"
 msgid "Tagline:"
-msgstr "Tagline"
+msgstr "Слоган"
 
 #: templates/movies/movie_detail.html:32
 msgid "Director by:"
-msgstr "Directeur par :"
+msgstr "Режиссер"
 
 #: templates/movies/movie_detail.html:40
 msgid "Actors:"
-msgstr "Acteurs:"
+msgstr "Актер"
+
+#: templates/movies/movie_detail.html:46
+msgid "Genre:"
+msgstr "Жанр"
 
 #: templates/movies/movie_detail.html:52
 msgid "Premier in world:"
-msgstr "Premier au monde :"
+msgstr "Премьера в мире"
 
 #: templates/movies/movie_detail.html:55
 msgid "Budget:"
-msgstr "Budget:"
+msgstr "Бюджет"
 
 #: templates/movies/movie_detail.html:57
 msgid "Fees in USA:"
-msgstr "Frais aux États-Unis:"
+msgstr "Сборы в США"
 
 #: templates/movies/movie_detail.html:58
 msgid "Fees in world:"
-msgstr "Frais dans le monde :"
+msgstr "Сборы в мире"
 
 #: templates/movies/movie_detail.html:123
 msgid "About movie"
-msgstr "A propos du film"
+msgstr "Все о фильме"
 
 #: templates/movies/movie_detail.html:156
 msgid "Leave a review"
-msgstr "Laissez un commentaire"
+msgstr "Оставить комментарий"
 
 #: templates/movies/movie_detail.html:165
 msgid "Your Comments"
-msgstr "Vos commentaires"
+msgstr "Ваш комментарий"
 
 #: templates/movies/movie_detail.html:174
 msgid "Name *"
-msgstr "Nom *"
+msgstr "Имя *"
 
 #: templates/movies/movie_detail.html:192
 msgid "Send"
-msgstr "Envoyer"
+msgstr "Отправить"
 
-#: venv/lib/python3.6/site-packages/ckeditor_uploader/templates/ckeditor/browse.html:5
-msgid "Select an image to embed"
-msgstr ""
-
-#: venv/lib/python3.6/site-packages/ckeditor_uploader/templates/ckeditor/browse.html:27
-msgid "Browse for the image you want, then click 'Embed Image' to continue..."
-msgstr ""
-
-#: venv/lib/python3.6/site-packages/ckeditor_uploader/templates/ckeditor/browse.html:29
-msgid ""
-"No images found. Upload images using the 'Image Button' dialog's 'Upload' "
-"tab."
-msgstr ""
-
-#: venv/lib/python3.6/site-packages/ckeditor_uploader/templates/ckeditor/browse.html:50
-msgid "Images in: "
-msgstr ""
-
-#: venv/lib/python3.6/site-packages/ckeditor_uploader/templates/ckeditor/browse.html:62
-#: venv/lib/python3.6/site-packages/ckeditor_uploader/templates/ckeditor/browse.html:80
-msgid "Embed Image"
-msgstr ""
-
-#: venv/lib/python3.6/site-packages/ckeditor_uploader/templates/ckeditor/browse.html:146
-msgid "Play Slideshow"
-msgstr ""
-
-#: venv/lib/python3.6/site-packages/ckeditor_uploader/templates/ckeditor/browse.html:147
-msgid "Pause Slideshow"
-msgstr ""
-
-#: venv/lib/python3.6/site-packages/ckeditor_uploader/templates/ckeditor/browse.html:148
-msgid "&lsaquo; Previous Photo"
-msgstr ""
-
-#: venv/lib/python3.6/site-packages/ckeditor_uploader/templates/ckeditor/browse.html:149
-msgid "Next Photo &rsaquo;"
-msgstr ""
-
-#: venv/lib/python3.6/site-packages/ckeditor_uploader/templates/ckeditor/browse.html:150
-msgid "Next &rsaquo;"
-msgstr ""
-
-#: venv/lib/python3.6/site-packages/ckeditor_uploader/templates/ckeditor/browse.html:151
-msgid "&lsaquo; Prev"
-msgstr ""
-
-#: venv/lib/python3.6/site-packages/django/views/templates/default_urlconf.html:7
-#: venv/lib/python3.6/site-packages/django/views/templates/default_urlconf.html:221
-msgid "The install worked successfully! Congratulations!"
-msgstr ""
-
-#: venv/lib/python3.6/site-packages/django/views/templates/default_urlconf.html:207
-#, python-format
-msgid ""
-"View <a href=\"https://docs.djangoproject.com/en/%(version)s/releases/\" "
-"target=\"_blank\" rel=\"noopener\">release notes</a> for Django %(version)s"
-msgstr ""
-
-#: venv/lib/python3.6/site-packages/django/views/templates/default_urlconf.html:222
-#, python-format
-msgid ""
-"You are seeing this page because <a href=\"https://docs.djangoproject.com/en/"
-"%(version)s/ref/settings/#debug\" target=\"_blank\" rel=\"noopener"
-"\">DEBUG=True</a> is in your settings file and you have not configured any "
-"URLs."
-msgstr ""
-
-#: venv/lib/python3.6/site-packages/django/views/templates/default_urlconf.html:230
-msgid "Django Documentation"
-msgstr ""
-
-#: venv/lib/python3.6/site-packages/django/views/templates/default_urlconf.html:231
-msgid "Topics, references, &amp; how-to’s"
-msgstr ""
-
-#: venv/lib/python3.6/site-packages/django/views/templates/default_urlconf.html:239
-msgid "Tutorial: A Polling App"
-msgstr ""
-
-#: venv/lib/python3.6/site-packages/django/views/templates/default_urlconf.html:240
-msgid "Get started with Django"
-msgstr ""
-
-#: venv/lib/python3.6/site-packages/django/views/templates/default_urlconf.html:248
-msgid "Django Community"
-msgstr ""
-
-#: venv/lib/python3.6/site-packages/django/views/templates/default_urlconf.html:249
-msgid "Connect, get help, or contribute"
-msgstr ""
-
-#~ msgid "Genre:"
-#~ msgstr "Genre:"
