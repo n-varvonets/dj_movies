@@ -19,6 +19,7 @@ from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
 
+
 urlpatterns = [
     path('admin/', admin.site.urls),
 
@@ -32,13 +33,11 @@ urlpatterns = [
 # и так же создаем раздел urlpatterns для указания на каких страницах делать переводить наш текст
 urlpatterns += i18n_patterns(
     path('accounts/', include('allauth.urls')),
-
     # в моем случае это:
     # 1) контакты
     path('contact/', include('contact.urls')),
     # 2) наши фильмы
     path('', include('movies.urls')),  # регестрируем файл урл в дир мувис
-
 
 )
 

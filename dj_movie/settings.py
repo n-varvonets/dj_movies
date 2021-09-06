@@ -60,9 +60,10 @@ MIDDLEWARE = [
     'django.contrib.sessions.middleware.SessionMiddleware',
 
     # добавим наже модуль для мультиязычности
-    'django.middleware.locale.LocaleMiddleware',
+   'django.middleware.locale.LocaleMiddleware',
 
-    'django.middleware.common.CommonMiddleware',
+   'django.middleware.common.CommonMiddleware',
+
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
@@ -128,7 +129,7 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/3.2/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'en'
 
 TIME_ZONE = 'UTC'
 
@@ -145,12 +146,18 @@ LOGIN_REDIRECT_URL = "/"
 EMAIL_BACKEND = 'django.core.mail.backends.dummy.EmailBackend'
 
 # добавляем языке на которых хотим делать перевод
-gettext = lambda s:s
-# зависит в каком порядке пмы поставим, потому что дефолту уже созданные данные в бд определяются как первое. И переводиться будет с первого на 2,3... языки
+gettext = lambda s: s
+# # зависит в каком порядке пмы поставим, потому что дефолту уже созданные данные в бд определяются как первое. И переводиться будет с первого на 2,3... языки
 LANGUAGES = (
     ('en', gettext('English')),
     ('ru', gettext('Russia')),
-    ('fr', gettext('France')),
+
+    #     ('fr', gettext('France')),
+
+)
+
+LOCALE_PATHS = (
+    os.path.join(BASE_DIR, 'locale'),
 )
 
 

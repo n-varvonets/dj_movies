@@ -15,9 +15,9 @@ class MovieAdminForm(forms.ModelForm):
     """форма с виджетом ckeditor"""
 
     #  т.к. в редакторе мы используем ckeditor и то нужно указать поля с наим виджетом
-    description_fr = forms.CharField(label='Description', widget=CKEditorUploadingWidget())
-    description_ru = forms.CharField(label='Description', widget=CKEditorUploadingWidget())  # важно указать поле, в которые хотим запилить над редактор + label укзывает название поля(http://i.imgur.com/u0RWVzP.png)
+    # description_fr = forms.CharField(label='Description', widget=CKEditorUploadingWidget())
     description_en = forms.CharField(label='Description', widget=CKEditorUploadingWidget())
+    description_ru = forms.CharField(label='Description', widget=CKEditorUploadingWidget()) # важно указать поле, в которые хотим запилить над редактор + label укзывает название поля(http://i.imgur.com/u0RWVzP.png)
 
     class Meta:
         """данный редактор мы встроем в нашу модель"""
@@ -30,7 +30,7 @@ class MovieAdminForm(forms.ModelForm):
 @admin.register(Category)
 # class CategoryAdmin(admin.ModelAdmin):  # работает в обычном режиме, но если я хочу указать модель в ктором будет же моя мультиязычность
 class CategoryAdmin(TranslationAdmin):
-    list_display = ('id', 'name', 'url')  #  позволяет конфигурировать список наших записей(что отображать в админке)... до(http://i.imgur.com/epAlKDe.png) и после(http://i.imgur.com/H5v3LOi.png)
+    list_display = ('name', 'url')  #  позволяет конфигурировать список наших записей(что отображать в админке)... до(http://i.imgur.com/epAlKDe.png) и после(http://i.imgur.com/H5v3LOi.png)
     list_display_links = ('name',)  # нажимая на имя категории мы переходим на нашу запись
 
 
